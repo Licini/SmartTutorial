@@ -19,4 +19,5 @@ python_version = "3.10"
 query = "./run.sh query"
 store = "./run.sh store"
 run = "./run.sh run"
+start-backend = "./run.sh start-backend"
 
