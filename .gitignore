@@ -6,3 +6,6 @@ frontend/node_modules
 __pycache__
 *.log
 *.nohup
+backend2/Hackathon_data/
+backend2/embeddings.json
+

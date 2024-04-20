@@ -1,6 +1,7 @@
 .PHONY: data
 data:
-	cd data && git clone https://github.com/specklesystems/speckle-blender
+	#cd data && git clone https://github.com/specklesystems/speckle-blender
+	cd backend2 && git clone https://github.com/Licini/Hackathon_data && cd Hackathon_data && unzip Archive.zip && mv data ../ && mv embeddings.json ../
 .PHONY: store
 store:
 	pipenv run store
