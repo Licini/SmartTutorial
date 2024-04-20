@@ -1,21 +1,35 @@
 
 
 from openai import OpenAI
-import json, os
+from annoy import AnnoyIndex
+import json
+
+embeddings = json.load(open("embeddings.json"))
 
 client = OpenAI()
+u = AnnoyIndex(3072, 'angular')
+u.load('embeddings.ann') # super fast, will just mmap the file
+# print(u.get_nns_by_item(0, 1000)) # will find the 1000 nearest neighbors
 
-def get_files(path):
-    # Get all .py files and .rst files.
-    files = []
-    for root, _, filenames in os.walk(path):
-        for filename in filenames:
-            if filename.endswith(".py"):
-                files.append(os.path.join(root, filename))
-    return files
+def ask(message, context_length=8):
+    response = client.embeddings.create(
+        input=message,
+        model="text-embedding-3-large"
+    )
+        
+    embedding = response.data[0].embedding
 
-def init():
+    results = u.get_nns_by_vector(embedding, context_length, include_distances=False)
+    for result in results:
+        print(embeddings[result]["path"], embeddings[result]["chunk"])
+    all_files = [embeddings[result]["path"] for result in results]
+    all_files = list(set(all_files))
     
+    context = "Following are the relevant context: \n\n"
+    for result in results:
+        context += open(embeddings[result]["path"], 'r').read()
+    
+
     # Create an assistant using the file ID
     assistant = client.beta.assistants.create(
         instructions="You are a tutorial generator that generates compas example codes based on the files provided.",
@@ -26,12 +40,9 @@ def init():
     # Create a vector store caled "Financial Statements"
     vector_store = client.beta.vector_stores.create(name="COMPAS source code")
     
-    all_files = get_files("data/compas/src/compas")
-    # file_streams
-    all_files = [path for path in all_files if os.path.getsize(path) > 0]
-
+    # Ready the files for upload to OpenAI 
     file_streams = [open(path, "rb") for path in all_files]
-
+    
     # Use the upload and poll SDK helper to upload the files, add them to the vector store,
     # and poll the status of the file batch for completion.
     file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
@@ -46,11 +57,6 @@ def init():
         assistant_id=assistant.id,
         tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},
     )
-
-    return assistant
-
-
-def ask(message, context_length=8):
     
     # Create a thread and attach the file to the message
     thread = client.beta.threads.create(
@@ -61,6 +67,9 @@ def ask(message, context_length=8):
         }
     ]
     )
+    
+    # The thread now has a vector store with that file in its tool resources.
+    print(thread.tool_resources.file_search)
 
 
     from typing_extensions import override
@@ -97,8 +106,7 @@ def ask(message, context_length=8):
     
     with client.beta.threads.runs.stream(
         thread_id=thread.id,
-        # assistant_id=assistant.id,
-        assistant_id='asst_8qvzSBtX8mOHJcAuiJNMoPE6',
+        assistant_id=assistant.id,
         # instructions="Please address the user as Jane Doe. The user has a premium account.",
         event_handler=EventHandler(),
     ) as stream:
@@ -106,7 +114,7 @@ def ask(message, context_length=8):
 
 
 if __name__ == "__main__":
-    # assistant = init()
     while True:
         response = ask(input("Enter a query: "))
+        # print(response["response"])
     
