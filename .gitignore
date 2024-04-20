@@ -3,3 +3,5 @@
 data
 store
 frontend/node_modules
+*.log
+*.nohup
