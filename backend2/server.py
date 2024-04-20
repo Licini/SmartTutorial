@@ -7,7 +7,6 @@ from ask import ask
 app = FastAPI()
 origins = ["*"]
 
-# query_engine = init()
 
 class Message(BaseModel):
     message: str
@@ -21,19 +20,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-async def hello():
-    return "Hello World"
 
 
-# @app.post("/")
-# async def echo_message(message: Message):
-#     global query_engine
+@app.post("/")
+async def echo_message(message: Message):
     
-#     message.message = ask(query_engine, message.message)
+    message.message = ask(message.message)
 
-#     responses = [
-#         {"from": "chatGpt", "data": message.message, "format": "text"},
-#         # {"from": "chatGpt", "data": message.message, "format": "code"},
-#     ]
-#     return responses
+    responses = [
+        {"from": "chatGpt", "data": message.message},
+    ]
+    return responses

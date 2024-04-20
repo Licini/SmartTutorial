@@ -1,6 +1,13 @@
 <template>
   <v-sheet class="chatbot">
 
+    <div class="inputBox">
+      <v-text-field background-color="grey lighten-1" solo v-model="currentMessage"
+        label="Ask for your customized tutorial here..."
+        @keyup.enter="sendMessage(currentMessage)">
+      </v-text-field>
+    </div>
+    
     <div class="messageBox">
       <div v-for="message in messages" :key="message.id"
         :class="message.from === 'user' ? 'messageFromUser' : 'messageFromChatGpt'">
@@ -10,24 +17,25 @@
       </div>
     </div>
 
-    <v-footer app color="transparent" class="inputBox">
-      <v-text-field background-color="grey lighten-1" dense solo v-model="currentMessage"
-        @keyup.enter="sendMessage(currentMessage)">
-      </v-text-field>
-    </v-footer>
-
   </v-sheet>
 </template>
 
 <script>
 import axios from 'axios'
 import CodeBlock from './CodeBlock.vue';
+import MarkdownIt from 'markdown-it';
 
 export default {
   name: "ChatBox",
+
   components: { CodeBlock },
+
   data() {
     return {
+      md: new MarkdownIt({
+        breaks: true,
+        html: true,
+      }),
       messages: [],
       currentMessage: null,
       sampleCode: `function add(a, b) {\n  return a + b;\n}`
@@ -50,21 +58,28 @@ export default {
 
       this.currentMessage = '';
 
-      let response = await axios.post('http://0.0.0.0:3000/', { message: message });
-      
+      // let response = await axios.post('http://0.0.0.0:3000/', { message: message });
+      let response = await axios.post('https://smart-backend.bimriver.com/', { message: message });
+
       response.data.forEach(msg => {
         this.messages.push({
-          id: Date.now() + Math.random(),
+          id: Date.now() + 1,
           from: msg.from,
-          data: msg.data,
+          data: this.parseResponse(msg),
           format: msg.format
         });
       });
-      
+
       this.$nextTick(() => {
         this.scrollToBottom();
       });
 
+    },
+
+    parseResponse(msg) {
+      let response = msg.data.response
+      response = response.replace(" - ", "\n - ")
+      return this.md.render(response)
     },
 
     scrollToBottom() {
@@ -77,35 +92,35 @@ export default {
 
 <style scoped>
 .inputBox {
-  margin: 0 15% 5% 15% !important;
+  margin: 5% 15% 0 15% !important;
   background: white !important;
 }
 
 .messageBox {
   height: 70vh;
-  margin: 150px 15% 0 15%;
+  margin: 0 15% 0 15%;
   overflow-y: auto;
 }
 
 .messageFromUser {
   text-align: left;
-  background-color: aliceblue;
+  background-color: rgb(243, 243, 243);
   border-radius: 10px;
-  padding: 10px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  width: 30%;
-  margin-left: 70%;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+  width: 100%;
 }
 
 .messageFromChatGpt {
   text-align: left;
-  background-color: antiquewhite;
+  background-color: rgba(230, 230, 230, 0.32);
   border-radius: 10px;
-  padding: 10px;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  width: 30%;
-  margin-right: 70%;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-right: 2rem;
+  width: 100%;
 }
 </style>

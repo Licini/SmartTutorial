@@ -10,6 +10,7 @@ u.load('embeddings.ann') # super fast, will just mmap the file
 # print(u.get_nns_by_item(0, 1000)) # will find the 1000 nearest neighbors
 
 def ask(message, context_length=8):
+    
     response = client.embeddings.create(
         input=message,
         model="text-embedding-3-large"
