@@ -1,7 +1,9 @@
 from annoy import AnnoyIndex
 import json
 
-embeddings = json.load(open("embeddings.json"))
+software = "threejs"
+
+embeddings = json.load(open(f"embeddings_{software}.json"))
 
 f = 3072  # Length of item vector that will be indexed
 
@@ -12,4 +14,4 @@ for i, e in enumerate(embeddings):
 
 
 t.build(10) # 10 trees
-t.save('embeddings.ann')
+t.save(f'embeddings_{software}.ann')

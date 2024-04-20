@@ -7,7 +7,7 @@ def get_files(path):
     files = []
     for root, _, filenames in os.walk(path):
         for filename in filenames:
-            if filename.endswith(".py") or filename.endswith(".rst"):
+            if filename.endswith(".py") or filename.endswith(".rst") or filename.endswith(".js"):
                 files.append(os.path.join(root, filename))
     return files
 
@@ -57,7 +57,9 @@ def vectorisation(path):
 
 if __name__ == "__main__":
     import json
-    files = get_files("data/compas/src/compas")
+
+    software = "threejs"
+    files = get_files(f"data/{software}")
     all_embeddings = []
     print(len(files))
     for i, file in enumerate(files):
@@ -65,4 +67,4 @@ if __name__ == "__main__":
         embeddings = vectorisation(file)
         all_embeddings.extend(embeddings)
 
-    json.dump(all_embeddings, open("embeddings.json", "w"))
+    json.dump(all_embeddings, open(f"embeddings_{software}.json", "w"))
