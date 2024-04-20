@@ -3,6 +3,8 @@
 tok=$(cat .token-openai)
 export OPENAI_API_KEY=$tok
 
+echo $tok
+
 mkdir -p data
 mkdir -p store
 
