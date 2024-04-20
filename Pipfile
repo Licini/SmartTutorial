@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 "llama-index" = "*"
+"uvicorn" = "*"
+"fastapi" = "*" 
+"pydantic" = "*"
 
 [dev-packages]
 autopep8 = "*"
@@ -15,4 +18,5 @@ python_version = "3.10"
 [scripts]
 query = "./run.sh query"
 store = "./run.sh store"
+run = "./run.sh run"
 
