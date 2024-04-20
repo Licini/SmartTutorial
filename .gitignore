@@ -2,3 +2,4 @@
 .token-openai
 data
 store
+frontend/node_modules

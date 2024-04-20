@@ -9,5 +9,7 @@ query:
 .PHONY: run
 run:
 	pipenv run run
+.PHONY: build-front
+	cd frontend && npm install
 
 
