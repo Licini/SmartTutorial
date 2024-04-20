@@ -9,7 +9,7 @@ u = AnnoyIndex(3072, 'angular')
 u.load('embeddings.ann') # super fast, will just mmap the file
 # print(u.get_nns_by_item(0, 1000)) # will find the 1000 nearest neighbors
 
-def prompt(message, context_length=8):
+def ask(message, context_length=8):
     response = client.embeddings.create(
         input=message,
         model="text-embedding-3-large"
@@ -20,6 +20,8 @@ def prompt(message, context_length=8):
     results = u.get_nns_by_vector(embedding, context_length, include_distances=False)
     for result in results:
         print(embeddings[result]["path"], embeddings[result]["chunk"])
+    all_files = [embeddings[result]["path"] for result in results]
+    all_files = list(set(all_files))
     
     context = "Following are the relevant context: \n\n"
     for result in results:
@@ -32,10 +34,16 @@ def prompt(message, context_length=8):
             {"role": "user", "content": context},
             {"role": "user", "content": message},
         ])
-    print(response.choices[0].message.content)
+    # print(response.choices[0].message.content)
+
+    return {
+        "response": response.choices[0].message.content,
+        "files": all_files
+    }
 
 
 if __name__ == "__main__":
     while True:
-        prompt(input("Enter a query: "))
+        response = ask(input("Enter a query: "))
+        print(response["response"])
     
