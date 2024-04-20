@@ -9,5 +9,6 @@ mkdir -p store
 case $1 in
 	query) python backend/query.py ;;
 	store) python backend/store.py ;;
+	run) cd backend && uvicorn server:app --port 3000 --reload ;;
 	*) echo "?"
 esac
