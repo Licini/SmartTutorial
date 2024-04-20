@@ -25,7 +25,7 @@ stop_frontend()
 
 start_backend()
 {
-	cd backend
+	cd backend2
        	nohup uvicorn server:app --port 3001 --reload > ../backend.log &
 	echo $! > ../backend.nohup
 	echo "started (" $! ")"

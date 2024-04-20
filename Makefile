@@ -1,3 +1,5 @@
+install:
+	pipenv install
 .PHONY: data
 data:
 	#cd data && git clone https://github.com/specklesystems/speckle-blender
@@ -13,6 +15,9 @@ run-backend:
 .PHONY: start-backend
 start-backend:
 	pipenv run start-backend
+.PHONY: stop-backend
+stop-backend:
+	pipenv run stop-backend
 .PHONY: log-backend
 log-backend:
 	./run.sh log-backend
