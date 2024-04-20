@@ -4,10 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"llama-index" = "*"
 "uvicorn" = "*"
 "fastapi" = "*" 
 "pydantic" = "*"
+"annoy" = "*"
+"openai" = "*"
 
 [dev-packages]
 autopep8 = "*"
@@ -20,4 +21,5 @@ query = "./run.sh query"
 store = "./run.sh store"
 run = "./run.sh run"
 start-backend = "./run.sh start-backend"
+stop-backend = "./run.sh stop-backend"
 
