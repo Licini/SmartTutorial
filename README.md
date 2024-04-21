@@ -1,5 +1,7 @@
 # Smart Tutorial
 
+![](doc/SmartTutorial_2.jpeg)
+
 SmartTutorial : a web app to make interactive, ‘intelligent’ tutorials based on your codebase and domain-specific knowledge.
 
 Write a minimal tutorial with general key points, add links to your codebase repo, and let SmartTutorial generate for you a complete and detailed tutorial based on your programming domain.
