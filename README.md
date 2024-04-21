@@ -9,13 +9,28 @@ Try it online at [smart.bimriver.com](smart.bimriver.com)
 
 
 ### Backend : Python
+
 - Install the required packages from `Pipfile`
-- Run the `server.py` from `backend2` folder
-- Add OpenAI key in an `.openai-key` file
+
+`make install-backend` or `pipenv install`
+
+- Add your OpenAI key in an `.openai-key` file in the root folder
+
+- Run the server
+
+`make run-backend` or `pipenv run backend`
+
+- Serve as daemon
+
+`make start-backend`
+
+`make stop-backend`
 
 ### Frontend : Vue
+
 - Install and run the vue app
 
+`make build-frontend` or `cd frontend && npm install`
 
 
 #### References
