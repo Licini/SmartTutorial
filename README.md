@@ -1,4 +1,4 @@
-# Smart Tutorial
+# SmartTutorial
 
 ![](doc/SmartTutorial_2.jpeg)
 
