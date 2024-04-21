@@ -20,7 +20,7 @@ Try it online at [smart.bimriver.com](http://smart.bimriver.com)
 
 - Install embeddings for Compas
 
-  `make install-data`
+`make install-data`
 
 - Run the server
 
