@@ -18,6 +18,10 @@ Try it online at [smart.bimriver.com](http://smart.bimriver.com)
 
 - Add your OpenAI key in an `.openai-key` file in the root folder
 
+- Install embeddings for Compas
+
+  `make install-data`
+
 - Run the server
 
 `make run-backend` or `pipenv run backend`
