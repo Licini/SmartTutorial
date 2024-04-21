@@ -5,7 +5,7 @@ SmartTutorial : a web app to make interactive, ‘intelligent’ tutorials based
 Write a minimal tutorial with general key points, add links to your codebase repo, and let SmartTutorial generate for you a complete and detailed tutorial based on your programming domain.
 
 
-Try it online at [smart.bimriver.com](smart.bimriver.com)
+Try it online at [smart.bimriver.com](http://smart.bimriver.com)
 
 
 ### Backend : Python
