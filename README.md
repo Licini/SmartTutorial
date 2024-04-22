@@ -36,6 +36,10 @@ Write a minimal tutorial with general key points, add links to your codebase rep
 `make build-frontend` or `cd frontend && npm install`
 
 
+#### Sample
+![example](doc/example.png)
+
+
 #### References
 - [Annoy (Approximate Nearest Neighbors Oh Yeah)](https://github.com/spotify/annoy)
 - [LlamaIndex Github Repo Reader](https://docs.llamaindex.ai/en/stable/examples/data_connectors/GithubRepositoryReaderDemo/)
